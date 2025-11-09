@@ -11,12 +11,14 @@ export default function PromptInputWithBottomActions ({
   input,
   onChange,
   onSubmit,
-  disabled
+  disabled,
+  onAttachClick
 }: {
   input: string
   onChange: (value: string) => void
   onSubmit: (e: React.FormEvent) => void
   disabled?: boolean
+  onAttachClick?: () => void
 }) {
   const ideas = [
     {
@@ -111,14 +113,15 @@ export default function PromptInputWithBottomActions ({
               startContent={
                 <Icon
                   className='text-default-500'
-                  icon='solar:document-text-linear'
+                  icon='solar:paperclip-linear'
                   width={18}
                 />
               }
               variant='flat'
               isDisabled={disabled}
+              onClick={onAttachClick}
             >
-              Research Topic
+              Attach Files
             </Button>
           </div>
           <p className='py-1 text-tiny text-default-400'>
