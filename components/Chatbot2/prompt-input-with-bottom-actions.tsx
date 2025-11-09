@@ -20,20 +20,20 @@ export default function PromptInputWithBottomActions ({
 }) {
   const ideas = [
     {
-      title: 'Create a blog post about HeroUI',
-      description: 'explain it in simple terms'
+      title: 'AI for climate modeling',
+      description: 'research recent breakthroughs'
     },
     {
-      title: 'Give me 10 ideas for my next blog post',
-      description: 'include only the best ideas'
+      title: 'Battery efficiency improvements',
+      description: 'analyze latest innovations'
     },
     {
-      title: 'Compare HeroUI with other UI libraries',
-      description: 'be as objective as possible'
+      title: 'Quantum computing applications',
+      description: 'explore practical use cases'
     },
     {
-      title: 'Write a text message to my friend',
-      description: 'be polite and friendly'
+      title: 'Renewable energy trends',
+      description: 'synthesize current research'
     }
   ]
 
@@ -50,7 +50,8 @@ export default function PromptInputWithBottomActions ({
               key={index}
               className='flex flex-col items-start gap-0 h-14'
               variant='flat'
-              onClick={() => onChange(title)} // fill prompt when clicked
+              onClick={() => onChange(title)}
+              isDisabled={disabled}
             >
               <p>{title}</p>
               <p className='text-default-500'>{description}</p>
@@ -75,8 +76,8 @@ export default function PromptInputWithBottomActions ({
               <Tooltip showArrow content='Send message'>
                 <Button
                   isIconOnly
-                  color={!input ? 'default' : 'primary'}
-                  isDisabled={!input}
+                  color={!input || disabled ? 'default' : 'primary'}
+                  isDisabled={!input || disabled}
                   radius='lg'
                   size='sm'
                   variant='solid'
@@ -85,7 +86,9 @@ export default function PromptInputWithBottomActions ({
                   <Icon
                     className={cn(
                       '[&>path]:stroke-[2px]',
-                      !input ? 'text-default-600' : 'text-primary-foreground'
+                      !input || disabled
+                        ? 'text-default-600'
+                        : 'text-primary-foreground'
                     )}
                     icon='solar:arrow-up-linear'
                     width={20}
@@ -98,7 +101,7 @@ export default function PromptInputWithBottomActions ({
           radius='lg'
           value={input}
           variant='flat'
-          onValueChange={onChange} // ✅ correct signature
+          onValueChange={onChange}
         />
 
         <div className='flex items-center justify-between w-full gap-2 px-4 pb-4 overflow-scroll'>
@@ -108,16 +111,19 @@ export default function PromptInputWithBottomActions ({
               startContent={
                 <Icon
                   className='text-default-500'
-                  icon='solar:paperclip-linear'
+                  icon='solar:document-text-linear'
                   width={18}
                 />
               }
               variant='flat'
+              isDisabled={disabled}
             >
-              Attach
+              Research Topic
             </Button>
           </div>
-          <p className='py-1 text-tiny text-default-400'>{input.length}/2000</p>
+          <p className='py-1 text-tiny text-default-400'>
+            {disabled ? '⏳ Researching...' : `${input.length}/2000`}
+          </p>
         </div>
       </form>
     </div>

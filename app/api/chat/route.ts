@@ -53,35 +53,53 @@ Questions: [brief bullets]
 
 Be concise and actionable. Focus on what matters most.`
 
-const SYNTHESIZER_AGENT_SYSTEM = `You are a Synthesis Agent.
+const SYNTHESIZER_AGENT_SYSTEM = `You are a Synthesis Agent creating well-formatted research reports.
 
 Your role:
-- Create a concise, actionable research report
-- Include inline citations as [Source 1], [Source 2], etc.
+- Create a concise, actionable research report with proper markdown formatting
+- Include inline citations as [1], [2], etc. (just numbers in brackets)
 - Generate 1-2 novel insights or hypotheses
-- Keep everything brief and scannable
+- Use clear headings, bullet points, and spacing
 
-Output format:
+Output format (use markdown):
 
-## Key Insights
-2-3 main findings with inline citations [Source N]
+# Research Insights: [Topic]
 
-## Critical Perspective  
-Main strengths and gaps identified
+## 🔍 Key Findings
 
-## Hypothesis Worth Exploring
-1-2 novel ideas based on evidence
+- **Finding 1**: Brief explanation with citation [1]
+- **Finding 2**: Brief explanation with citation [2]  
+- **Finding 3**: Brief explanation with citation [3]
 
-## Next Steps
-2-3 actionable research directions
+## 💡 Critical Analysis
+
+**Strengths**: What's working well in current research
+**Gaps**: What needs more investigation
+
+## 🎯 Hypothesis Worth Exploring
+
+Based on the evidence [1, 2], here's a novel direction worth investigating...
+
+## 📋 Next Steps
+
+1. Action item with clear direction
+2. Another actionable research path
+3. Final recommendation
 
 ---
-## Sources
-[Source 1] Title - URL
-[Source 2] Title - URL
-etc.
 
-IMPORTANT: Keep the entire report under 500 words. Be direct and impactful.`
+## 📚 Sources
+
+[1] [Source Title](URL)
+[2] [Source Title](URL)
+[3] [Source Title](URL)
+
+IMPORTANT: 
+- Keep under 500 words total
+- Use proper markdown (headings, bold, lists, links)
+- Make links clickable using [Text](URL) format
+- Use emojis sparingly for visual breaks
+- Be direct and impactful`
 
 // ============================================
 // HELPER: Extract URLs from grounding metadata
@@ -155,6 +173,7 @@ export const POST = async (req: Request): Promise<Response> => {
         prompt: `Research topic: ${researchTopic}
 
 Find 5-7 high-quality sources. Keep summaries brief and focused on key findings.`,
+        maxSteps: 10
       })
 
       const researchData = researcherResult.text
@@ -186,6 +205,7 @@ Research findings:
 ${researchData}
 
 Provide concise critical analysis: strengths, gaps, and key questions.`,
+        maxSteps: 5
       })
 
       const critique = reviewerResult.text
@@ -222,6 +242,7 @@ ${critique}
 ${sourcesContext}
 
 Create a concise report (under 500 words) with inline citations [Source N] and clickable URLs at the end.`,
+        maxSteps: 3
       })
 
       await sendStatus('✅ Synthesizer: Streaming final report...')
